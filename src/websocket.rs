@@ -126,9 +126,9 @@ fn ws_stream(
             .iter_mut()
             .find(|user| user.id == data.state.user_id);
 
-          if let Some(channel_id) = &data.state.channel_id {
-            // If the channel is not our channel, remove them from the list
-            if channel_id != &current_channel {
+          match &data.state.channel_id {
+            Some(channel_id) if channel_id == &current_channel => {}
+            _ => {
               state
                 .voice_users
                 .retain(|user| user.id != data.state.user_id);
